@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<script src="jquery.min.js"></script>
+		<script src="FlipClock/flipclock.js"></script>		
+		<link rel="stylesheet" href="FlipClock/flipclock.css">
+
+    <script type="text/javascript">
+      $(document).ready(function() {     
+          var minutes = prompt("Geef het aantal minuten aan: ", "10"); 
+          var seconds = parseFloat(minutes) * 60;
+          var clock = $('.clock').FlipClock((parseInt(seconds)), {
+              clockFace: 'MinuteCounter',
+              countdown: true,
+              autoStart: false,
+              continueOnStop: true,
+              
+              language: 'nl',
+              callbacks: {
+
+                stop: function() {										
+                  if (clock.continueOnStop === false) return;
+                  $('#alarm')[0].play(); 					
+                  clock.countdown = false;
+
+                  clock.onFliped = function(){
+                      $(".flip-clock-wrapper ul li a div ").css("color", "red");
+                  }
+
+                  clock.start();
+                }
+              }
+            });
+            $(".stopButton").click(function(){
+              clock.continueOnStop = false;
+              clock.stop();
+            });
+            $(".resumeButton").click(function(){
+              clock.continueOnStop = true;
+              clock.start();
+            });
+
+          clock.start();
+      });
+    </script>
+	</head>
+	<body>
+    <div class="clock" style="margin:2em;"></div>
+    <button class="stopButton">Stop</button>
+    <button class="resumeButton">Resume</button>
+    <audio id="alarm" src="TimeUp.MP3"></a>
+	</body>
+</html>
